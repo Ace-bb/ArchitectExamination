@@ -1,10 +1,7 @@
-"""
-系统架构师模拟做题系统 - FastAPI 后端
-"""
-
 import json
 import os
-from typing import Optional
+from typing import Optional, Dict, Any
+from enum import Enum
 
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
@@ -16,29 +13,46 @@ from pydantic import BaseModel
 
 from parser import list_exam_files, parse_exam_file
 
-# 错题本数据文件路径
-MISTAKES_FILE = os.path.join(os.path.dirname(__file__), "mistakes.json")
+# Define exam types
+class ExamType(str, Enum):
+    regular = "regular"
+    historical = "historical"
 
+# Configurable directories
+REGULAR_QUESTIONS_DIR = os.getenv("EXAM_QUESTIONS_DIR", "../exam_questions")
+HISTORICAL_QUESTIONS_DIR = os.getenv("EXAM_HISTORICAL_DIR", "../exam_md")
 
-def load_mistakes() -> dict:
-    """从本地文件读取错题记录，格式：{ question_id: count }"""
-    if not os.path.exists(MISTAKES_FILE):
+# Map exam types to directories
+EXAM_DIRS = {
+    ExamType.regular: REGULAR_QUESTIONS_DIR,
+    ExamType.historical: HISTORICAL_QUESTIONS_DIR
+}
+
+# Update the mistakes file path to support different exam types
+def get_mistakes_file(exam_type: ExamType) -> str:
+    filename = f"mistakes_{exam_type.value}.json"
+    return os.path.join(os.path.dirname(__file__), filename)
+
+def load_mistakes(exam_type: ExamType) -> dict:
+    """From local file read mistake records, format: { question_id: count }"""
+    mistakes_file = get_mistakes_file(exam_type)
+    if not os.path.exists(mistakes_file):
         return {}
-    with open(MISTAKES_FILE, "r", encoding="utf-8") as file:
+    with open(mistakes_file, "r", encoding="utf-8") as file:
         try:
             return json.load(file)
         except json.JSONDecodeError:
             return {}
 
-
-def save_mistakes(mistakes: dict) -> None:
-    """将错题记录写入本地文件"""
-    with open(MISTAKES_FILE, "w", encoding="utf-8") as file:
+def save_mistakes(exam_type: ExamType, mistakes: dict) -> None:
+    """Write mistake records to local file"""
+    mistakes_file = get_mistakes_file(exam_type)
+    with open(mistakes_file, "w", encoding="utf-8") as file:
         json.dump(mistakes, file, ensure_ascii=False, indent=2)
 
 load_dotenv()
 
-app = FastAPI(title="系统架构师模拟做题系统", version="1.0.0")
+app = FastAPI(title="System Architect Practice System", version="1.0.0")
 
 app.add_middleware(
     CORSMiddleware,
@@ -48,14 +62,14 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# 挂载静态文件目录（前端页面）
+# Mount static files directory (frontend page)
 static_dir = os.path.join(os.path.dirname(__file__), "static")
 if os.path.exists(static_dir):
     app.mount("/static", StaticFiles(directory=static_dir), name="static")
 
 
 # ──────────────────────────────────────────────
-# 数据模型
+# Data Models
 # ──────────────────────────────────────────────
 
 class ChatRequest(BaseModel):
@@ -67,20 +81,131 @@ class ChatRequest(BaseModel):
     user_message: str
     history: list[dict] = []
 
+class SaveMistakesRequest(BaseModel):
+    exam_type: ExamType = ExamType.regular
+    wrong_question_ids: list[str]
+
 
 # ──────────────────────────────────────────────
-# 题库接口
+# Exam Interface
 # ──────────────────────────────────────────────
+
+# Cache for exam file lists to avoid repeated directory scans
+_exam_file_cache = {}
+
+def list_exam_files_by_type(exam_type: ExamType):
+    """List exam files based on exam type with caching"""
+    # Return cached result if available
+    if exam_type in _exam_file_cache:
+        return _exam_file_cache[exam_type]
+    
+    exam_dir = EXAM_DIRS.get(exam_type)
+    if not exam_dir or not os.path.exists(exam_dir):
+        _exam_file_cache[exam_type] = []
+        return []
+    
+    files = []
+    
+    # For historical exams, search recursively in subdirectories
+    if exam_type == ExamType.historical:
+        for root, dirs, filenames in os.walk(exam_dir):
+            # Skip the images directory
+            if 'images' in root:
+                continue
+            for filename in sorted(filenames):
+                if filename.endswith('.md'):
+                    # Use subdirectory name as file_id for historical exams
+                    subdir_name = os.path.basename(root)
+                    file_id = subdir_name
+                    files.append({
+                        "filename": filename,
+                        "file_id": file_id,
+                        "full_path": os.path.join(root, filename),
+                        "exam_type": exam_type.value
+                    })
+    else:
+        # For regular exams, just list files in the root directory
+        for filename in sorted(os.listdir(exam_dir)):
+            if filename.endswith('.md'):
+                file_id = os.path.splitext(filename)[0]
+                files.append({
+                    "filename": filename,
+                    "file_id": file_id,
+                    "exam_type": exam_type.value
+                })
+    
+    # Cache the result
+    _exam_file_cache[exam_type] = files
+    return files
+
+
+# Cache for parsed exam files to avoid repeated parsing
+_parsed_exam_cache = {}
+
+def parse_exam_file_by_type(exam_type: ExamType, file_id: str):
+    """Parse exam file based on exam type with caching"""
+    # Create cache key
+    cache_key = f"{exam_type.value}:{file_id}"
+    
+    # Return cached result if available
+    if cache_key in _parsed_exam_cache:
+        return _parsed_exam_cache[cache_key]
+    
+    exam_dir = EXAM_DIRS.get(exam_type)
+    if not exam_dir:
+        return None
+    
+    # For historical exams, file_id is the subdirectory name
+    if exam_type == ExamType.historical:
+        # Find the .md file in the subdirectory
+        subdir_path = os.path.join(exam_dir, file_id)
+        if not os.path.exists(subdir_path):
+            return None
+        
+        # Look for .md file in this subdirectory
+        md_files = [f for f in os.listdir(subdir_path) if f.endswith('.md')]
+        if not md_files:
+            return None
+        
+        # Use the first .md file found
+        filename = md_files[0]
+        file_path = os.path.join(subdir_path, filename)
+    else:
+        # For regular exams, file_id is the filename without extension
+        file_path = os.path.join(exam_dir, f"{file_id}.md")
+    
+    if not os.path.exists(file_path):
+        return None
+    
+    # Parse the file
+    from parser import parse_exam_file_content
+    result = parse_exam_file_content(file_path, exam_type.value)
+    
+    # Cache the result
+    _parsed_exam_cache[cache_key] = result
+    return result
+
+
+@app.get("/api/exam-types")
+def get_exam_types():
+    """Get available exam types"""
+    return {
+        "exam_types": [
+            {"value": "regular", "label": "章节练习"},
+            {"value": "historical", "label": "历年真题"}
+        ]
+    }
+
 
 @app.get("/api/chapters")
-def get_chapters():
-    """获取所有章节列表（树形结构）"""
-    exam_files = list_exam_files()
+def get_chapters(exam_type: ExamType = ExamType.regular):
+    """Get chapter list (tree structure) by exam type"""
+    exam_files = list_exam_files_by_type(exam_type)
     chapters = []
 
     for exam_file in exam_files:
         file_id = exam_file["file_id"]
-        parsed = parse_exam_file(file_id)
+        parsed = parse_exam_file_by_type(exam_type, file_id)
         if not parsed:
             continue
 
@@ -96,27 +221,61 @@ def get_chapters():
             "file_id": file_id,
             "title": parsed["title"],
             "sections": sections,
+            "exam_type": exam_type.value
         })
 
     return {"chapters": chapters}
 
 
-@app.get("/api/sections/{section_id}")
-def get_section_questions(section_id: str):
+@app.post("/api/cache/clear")
+def clear_cache(exam_type: str = None):
     """
-    获取某个子章节下的所有题目。
-    section_id 格式：{file_id}_s{index}，如 006_1_exam_s1
+    Clear the exam file cache.
+    If exam_type is provided, only clear that type's cache.
+    Otherwise, clear all caches.
     """
-    # 从 section_id 中解析出 file_id
-    # section_id 格式：006_1_exam_s1 → file_id = 006_1_exam
-    parts = section_id.rsplit("_s", 1)
-    if len(parts) != 2:
-        raise HTTPException(status_code=400, detail="无效的 section_id 格式")
+    global _exam_file_cache, _parsed_exam_cache
+    
+    if exam_type:
+        # Clear specific exam type cache
+        exam_type_enum = ExamType(exam_type)
+        _exam_file_cache.pop(exam_type_enum, None)
+        # Clear parsed cache entries for this type
+        keys_to_remove = [k for k in _parsed_exam_cache if k.startswith(f"{exam_type}:")]
+        for key in keys_to_remove:
+            del _parsed_exam_cache[key]
+        return {"message": f"Cleared cache for exam type: {exam_type}"}
+    else:
+        # Clear all caches
+        _exam_file_cache.clear()
+        _parsed_exam_cache.clear()
+        return {"message": "Cleared all caches"}
 
-    file_id = parts[0]
-    parsed = parse_exam_file(file_id)
+
+@app.get("/api/sections/{section_id}")
+def get_section_questions(section_id: str, exam_type: ExamType = ExamType.regular):
+    """
+    Get all questions under a subsection.
+    section_id format: {exam_type}_{file_id}_s{index}, e.g., regular_006_1_exam_s1
+    """
+    # Extract exam_type and file_id from section_id
+    parts = section_id.split('_', 2)
+    if len(parts) < 3:
+        raise HTTPException(status_code=400, detail="Invalid section_id format")
+    
+    extracted_exam_type = parts[0]
+    file_part = '_'.join(parts[1:])  # Reconstruct the rest part
+    # Now we need to split again to separate file_id from section index
+    # section_id format: {exam_type}_{file_id}_s{index}
+    file_section_parts = file_part.rsplit('_s', 1)
+    if len(file_section_parts) != 2:
+        raise HTTPException(status_code=400, detail="Invalid section_id format")
+        
+    file_id = file_section_parts[0]
+
+    parsed = parse_exam_file_by_type(ExamType(extracted_exam_type), file_id)
     if not parsed:
-        raise HTTPException(status_code=404, detail=f"找不到文件：{file_id}")
+        raise HTTPException(status_code=404, detail=f"File not found: {file_id}")
 
     target_section = None
     for section in parsed["sections"]:
@@ -125,7 +284,7 @@ def get_section_questions(section_id: str):
             break
 
     if not target_section:
-        raise HTTPException(status_code=404, detail=f"找不到子章节：{section_id}")
+        raise HTTPException(status_code=404, detail=f"Subsection not found: {section_id}")
 
     return {
         "section_id": target_section["section_id"],
@@ -136,21 +295,17 @@ def get_section_questions(section_id: str):
 
 
 # ──────────────────────────────────────────────
-# 错题本接口
+# Mistake Interface
 # ──────────────────────────────────────────────
 
-class SaveMistakesRequest(BaseModel):
-    wrong_question_ids: list[str]
-
-
 @app.get("/api/mistakes/{section_id}")
-def get_section_mistakes(section_id: str):
+def get_section_mistakes(section_id: str, exam_type: ExamType = ExamType.regular):
     """
-    获取某个子章节下各题目的历史错误次数。
-    返回：{ question_id: count, ... }（只包含有错误记录的题目）
+    Get historical error counts for questions under a subsection.
+    Return: { question_id: count, ... } (only questions with error records)
     """
-    all_mistakes = load_mistakes()
-    # 过滤出属于该子章节的错题（question_id 以 section_id 开头）
+    all_mistakes = load_mistakes(exam_type)
+    # Filter out mistakes belonging to this subsection (question_id starts with section_id)
     section_mistakes = {
         question_id: count
         for question_id, count in all_mistakes.items()
@@ -162,67 +317,68 @@ def get_section_mistakes(section_id: str):
 @app.post("/api/mistakes")
 def save_section_mistakes(request: SaveMistakesRequest):
     """
-    保存本次做错的题目，累加错误次数到本地 mistakes.json。
+    Save incorrectly answered questions, cumulatively add error counts to local mistakes.json.
     """
+    exam_type = request.exam_type
     if not request.wrong_question_ids:
         return {"saved": 0}
 
-    all_mistakes = load_mistakes()
+    all_mistakes = load_mistakes(exam_type)
     for question_id in request.wrong_question_ids:
         all_mistakes[question_id] = all_mistakes.get(question_id, 0) + 1
 
-    save_mistakes(all_mistakes)
+    save_mistakes(exam_type, all_mistakes)
     return {"saved": len(request.wrong_question_ids)}
 
 
 # ──────────────────────────────────────────────
-# AI 助手接口
+# AI Assistant Interface
 # ──────────────────────────────────────────────
 
 @app.post("/api/chat")
 def chat_with_ai(request: ChatRequest):
     """
-    与 AI 助手对话，针对某道题目进行深入解答。
-    支持多轮对话（通过 history 字段传递历史消息）。
+    Chat with AI assistant, in-depth answering of questions.
+    Support multi-round conversation (pass historical messages through history field).
     """
     api_key = os.environ.get("OPENAI_API_KEY", "")
     if not api_key:
-        raise HTTPException(status_code=500, detail="未配置 OPENAI_API_KEY，请在 .env 文件中设置")
+        raise HTTPException(status_code=500, detail="OPENAI_API_KEY not configured, please set in .env file")
 
     base_url = os.environ.get("OPENAI_BASE_URL", "https://api.openai.com/v1")
 
     client = OpenAI(api_key=api_key, base_url=base_url)
 
-    # 构建系统提示词
-    options_text = "\n".join(request.options) if request.options else "（无选项）"
-    system_prompt = f"""你是一位专业的系统架构师考试辅导老师，擅长深入浅出地解释计算机系统架构相关知识。
+    # Build system prompt
+    options_text = "\n".join(request.options) if request.options else "（No options）"
+    system_prompt = f"""You are a professional System Architect exam tutoring teacher, good at explaining computer system architecture related knowledge in depth and in an easy-to-understand way.
 
-当前题目信息：
-【题干】{request.question_stem}
-【选项】
+Current question information:
+【Stem】{request.question_stem}
+【Options】
 {options_text}
-【正确答案】{request.answer}
-【官方解析】{request.explanation}
+【Correct Answer】{request.answer}
+【Official Analysis】{request.explanation}
 
-请根据以上题目信息，结合学生的问题，给出详细、准确、易于理解的解答。
-解答时可以：
-1. 深入解释相关概念和原理
-2. 对比分析各选项的区别
-3. 举例说明实际应用场景
-4. 补充相关的考点知识
-请用中文回答，语言清晰简洁。"""
+Please give detailed, accurate, and easy-to-understand answers based on the above question information combined with student's questions.
+When explaining, you can:
+1. Explain related concepts and principles in depth
+2. Compare and analyze differences between options
+3. Give examples of actual application scenarios
+4. Supplement related test point knowledge
+Please answer in Chinese, language clear and concise."""
 
-    # 构建消息列表
+    # Build message list
     messages = [{"role": "system", "content": system_prompt}]
 
-    # 添加历史对话（最多保留最近 10 轮）
+    # Add historical conversations (keep up to last 10 rounds)
     for history_item in request.history[-10:]:
         role = history_item.get("role", "user")
         content = history_item.get("content", "")
         if role in ("user", "assistant") and content:
             messages.append({"role": role, "content": content})
 
-    # 添加当前用户消息
+    # Add current user message
     messages.append({"role": "user", "content": request.user_message})
 
     try:
@@ -235,19 +391,19 @@ def chat_with_ai(request: ChatRequest):
         ai_reply = response.choices[0].message.content
         return {"reply": ai_reply}
     except Exception as error:
-        raise HTTPException(status_code=500, detail=f"AI 服务调用失败：{str(error)}")
+        raise HTTPException(status_code=500, detail=f"AI service call failed: {str(error)}")
 
 
 # ──────────────────────────────────────────────
-# 前端页面入口
+# Frontend Page Entry
 # ──────────────────────────────────────────────
 
 @app.get("/")
 def serve_index():
-    """返回前端页面"""
+    """Return frontend page"""
     index_path = os.path.join(os.path.dirname(__file__), "static", "index.html")
     if not os.path.exists(index_path):
-        raise HTTPException(status_code=404, detail="前端页面未找到，请确认 static/index.html 存在")
+        raise HTTPException(status_code=404, detail="Frontend page not found, please confirm static/index.html exists")
     return FileResponse(index_path)
 
 

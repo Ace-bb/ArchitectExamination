@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -9,9 +10,15 @@
   <link rel="stylesheet" href="https://unpkg.com/element-plus/dist/index.css" />
 
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-    html, body, #app {
+    html,
+    body,
+    #app {
       height: 100%;
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       background: #f0f2f5;
@@ -24,7 +31,7 @@
       display: flex;
       align-items: center;
       padding: 0 24px;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
       position: fixed;
       top: 0;
       left: 0;
@@ -87,9 +94,18 @@
       padding: 8px 0;
     }
 
-    .sidebar-tree::-webkit-scrollbar { width: 4px; }
-    .sidebar-tree::-webkit-scrollbar-track { background: transparent; }
-    .sidebar-tree::-webkit-scrollbar-thumb { background: #cbd5e0; border-radius: 2px; }
+    .sidebar-tree::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    .sidebar-tree::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .sidebar-tree::-webkit-scrollbar-thumb {
+      background: #cbd5e0;
+      border-radius: 2px;
+    }
 
     /* 章节节点 */
     .chapter-node {
@@ -243,9 +259,18 @@
       padding: 20px 24px;
     }
 
-    .questions-scroll::-webkit-scrollbar { width: 6px; }
-    .questions-scroll::-webkit-scrollbar-track { background: transparent; }
-    .questions-scroll::-webkit-scrollbar-thumb { background: #cbd5e0; border-radius: 3px; }
+    .questions-scroll::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .questions-scroll::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .questions-scroll::-webkit-scrollbar-thumb {
+      background: #cbd5e0;
+      border-radius: 3px;
+    }
 
     /* 空状态 */
     .empty-state {
@@ -272,18 +297,18 @@
       border-radius: 12px;
       padding: 24px;
       margin-bottom: 16px;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
       border: 1px solid #e2e8f0;
       transition: box-shadow 0.2s;
     }
 
     .question-card:hover {
-      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
     }
 
     .question-card.selected-for-ai {
       border-color: #63b3ed;
-      box-shadow: 0 0 0 2px rgba(99,179,237,0.3);
+      box-shadow: 0 0 0 2px rgba(99, 179, 237, 0.3);
     }
 
     .question-number-row {
@@ -468,9 +493,17 @@
       font-size: 18px;
     }
 
-    .result-stat-value.correct { color: #38a169; }
-    .result-stat-value.wrong { color: #e53e3e; }
-    .result-stat-value.unanswered { color: #d69e2e; }
+    .result-stat-value.correct {
+      color: #38a169;
+    }
+
+    .result-stat-value.wrong {
+      color: #e53e3e;
+    }
+
+    .result-stat-value.unanswered {
+      color: #d69e2e;
+    }
 
     /* 答案区域 */
     .answer-section {
@@ -607,9 +640,18 @@
       gap: 12px;
     }
 
-    .chat-messages::-webkit-scrollbar { width: 4px; }
-    .chat-messages::-webkit-scrollbar-track { background: transparent; }
-    .chat-messages::-webkit-scrollbar-thumb { background: #cbd5e0; border-radius: 2px; }
+    .chat-messages::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    .chat-messages::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .chat-messages::-webkit-scrollbar-thumb {
+      background: #cbd5e0;
+      border-radius: 2px;
+    }
 
     .chat-welcome {
       text-align: center;
@@ -709,7 +751,7 @@
 
     .chat-textarea:focus {
       border-color: #63b3ed;
-      box-shadow: 0 0 0 2px rgba(99,179,237,0.2);
+      box-shadow: 0 0 0 2px rgba(99, 179, 237, 0.2);
     }
 
     .chat-textarea:disabled {
@@ -764,721 +806,762 @@
       animation: bounce 1.2s infinite;
     }
 
-    .loading-dots span:nth-child(2) { animation-delay: 0.2s; }
-    .loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+    .loading-dots span:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    .loading-dots span:nth-child(3) {
+      animation-delay: 0.4s;
+    }
 
     @keyframes bounce {
-      0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
-      40% { transform: scale(1); opacity: 1; }
+
+      0%,
+      80%,
+      100% {
+        transform: scale(0.6);
+        opacity: 0.4;
+      }
+
+      40% {
+        transform: scale(1);
+        opacity: 1;
+      }
     }
 
     /* 响应式：小屏幕隐藏 AI 面板 */
     @media (max-width: 1100px) {
-      .ai-panel { width: 300px; min-width: 300px; }
+      .ai-panel {
+        width: 300px;
+        min-width: 300px;
+      }
     }
 
     @media (max-width: 900px) {
-      .sidebar { width: 240px; min-width: 240px; }
-      .ai-panel { width: 280px; min-width: 280px; }
+      .sidebar {
+        width: 240px;
+        min-width: 240px;
+      }
+
+      .ai-panel {
+        width: 280px;
+        min-width: 280px;
+      }
     }
   </style>
 </head>
+
 <body>
-<div id="app">
+  <div id="app">
 
-  <!-- 顶部导航栏 -->
-  <div class="top-navbar">
-    <div class="navbar-logo">🏛️ 架构师<span>备考</span>系统</div>
-    <div class="navbar-subtitle">系统架构师考试模拟练习平台</div>
+    <!-- 顶部导航栏 -->
+    <div class="top-navbar">
+      <div class="navbar-logo">🏛️ 架构师<span>备考</span>系统</div>
+      <div class="navbar-subtitle">系统架构师考试模拟练习平台</div>
+    </div>
+
+    <!-- 主体三栏布局 -->
+    <div class="main-layout">
+
+      <!-- ── 左侧菜单栏 ── -->
+      <div class="sidebar">
+        <div class="sidebar-header">
+          <span>📚</span>
+          <span>题库目录</span>
+          <span style="margin-left:auto;font-weight:400;color:#a0aec0">{{ totalChapterCount }} 章</span>
+
+          <!-- Add exam type selector -->
+          <div style="margin-top: 10px; width: 100%;">
+            <el-select v-model="selectedExamType" placeholder="选择题库类型" size="small"
+              style="width: 100%; margin-top: 8px;" @change="onExamTypeChange">
+              <el-option v-for="item in examTypes" :key="item.value" :label="item.label" :value="item.value">
+              </el-option>
+            </el-select>
+          </div>
+        </div>
+
+        <div class="sidebar-tree">
+          <!-- 加载中 -->
+          <div v-if="chaptersLoading" style="padding:24px;text-align:center;color:#a0aec0">
+            <el-icon class="is-loading">
+              <Loading />
+            </el-icon>
+            <div style="margin-top:8px;font-size:13px">加载题库...</div>
+          </div>
+
+          <!-- 章节树 -->
+          <div v-else>
+            <div v-for="chapter in chapters" :key="chapter.file_id" class="chapter-node">
+              <!-- 章节标题行 -->
+              <div class="chapter-header" :class="{ active: expandedChapters.has(chapter.file_id) }"
+                @click="toggleChapter(chapter.file_id)">
+                <span class="chapter-icon" :class="{ expanded: expandedChapters.has(chapter.file_id) }">▶</span>
+                <span class="chapter-title">{{ chapter.title }}</span>
+                <span class="chapter-badge">{{ chapter.sections.length }}</span>
+              </div>
+
+              <!-- 子章节列表 -->
+              <div class="section-list"
+                :style="{ maxHeight: expandedChapters.has(chapter.file_id) ? '2000px' : '0px' }">
+                <div v-for="section in chapter.sections" :key="section.section_id" class="section-item"
+                  :class="{ active: currentSectionId === section.section_id }"
+                  @click="selectSection(section.section_id)">
+                  <span class="section-dot"></span>
+                  <span class="section-title">{{ section.title }}</span>
+                  <span class="section-count">{{ section.question_count }}题</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── 中间答题区 ── -->
+      <div class="content-area">
+        <!-- 内容头部 -->
+        <div class="content-header" v-if="currentSection">
+          <div>
+            <div class="content-header-title">{{ currentSection.title }}</div>
+            <div class="content-header-sub">{{ currentSection.chapter_title }}</div>
+          </div>
+          <div class="content-header-badge">共 {{ currentSection.questions.length }} 道题</div>
+        </div>
+
+        <!-- 题目列表 -->
+        <div class="questions-scroll">
+          <!-- 空状态 -->
+          <div v-if="!currentSection && !questionsLoading" class="empty-state">
+            <div class="empty-state-icon">📖</div>
+            <div class="empty-state-text">请从左侧菜单选择一个章节开始练习</div>
+          </div>
+
+          <!-- 加载中 -->
+          <div v-if="questionsLoading" class="empty-state">
+            <el-icon class="is-loading" style="font-size:32px">
+              <Loading />
+            </el-icon>
+            <div class="empty-state-text">加载题目中...</div>
+          </div>
+
+          <!-- 题目卡片列表 -->
+          <div v-if="currentSection && !questionsLoading">
+            <div v-for="question in currentSection.questions" :key="question.question_id" class="question-card"
+              :class="{ 'selected-for-ai': selectedQuestion && selectedQuestion.question_id === question.question_id }">
+              <!-- 题号 + 题干 + 批改结果标签 + 错题次数 -->
+              <div class="question-number-row">
+                <div class="question-number-badge" :style="submitted ? getQuestionBadgeStyle(question) : {}">{{
+                  question.number }}</div>
+                <div class="question-stem">{{ question.stem }}</div>
+                <!-- 历史错题次数（未提交时显示） -->
+                <span v-if="!submitted && mistakeCounts[question.question_id]" class="mistake-count-badge">❌ 错过 {{
+                  mistakeCounts[question.question_id] }} 次</span>
+                <!-- 提交后的批改结果标签 -->
+                <span v-if="submitted" :class="['question-result-tag', getResultTagClass(question)]">
+                  {{ getResultTagText(question) }}
+                </span>
+              </div>
+
+              <!-- 选项列表 -->
+              <div class="question-options">
+                <div v-for="option in question.options" :key="option" class="option-item"
+                  :class="getOptionClass(question, option)" @click="selectAnswer(question.question_id, option)">
+                  <span class="option-letter">{{ extractOptionLetter(option) }}</span>
+                  <span>{{ extractOptionText(option) }}</span>
+                </div>
+              </div>
+
+              <!-- 答案解析区域（提交后自动展示，或手动查看） -->
+              <div class="answer-section" :class="{ visible: revealedAnswers.has(question.question_id) || submitted }">
+                <div class="answer-label">✅ 正确答案</div>
+                <div class="answer-value">{{ question.answer }}</div>
+                <div class="explanation-label">📝 解析</div>
+                <div class="explanation-text">{{ question.explanation }}</div>
+              </div>
+
+              <!-- 操作按钮 -->
+              <div class="question-actions">
+                <el-button v-if="!submitted" size="small"
+                  :type="revealedAnswers.has(question.question_id) ? 'success' : 'primary'"
+                  @click="toggleAnswer(question.question_id)">
+                  {{ revealedAnswers.has(question.question_id) ? '隐藏答案' : '查看答案' }}
+                </el-button>
+
+                <el-button size="small"
+                  :type="selectedQuestion && selectedQuestion.question_id === question.question_id ? 'warning' : 'default'"
+                  @click="selectQuestionForAI(question)">
+                  {{ selectedQuestion && selectedQuestion.question_id === question.question_id ? '✓ 已选中提问' : '向AI提问' }}
+                </el-button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 提交栏（未提交时显示） -->
+        <div class="submit-bar" v-if="currentSection && !questionsLoading && !submitted">
+          <div class="submit-progress">
+            已作答 <strong>{{ answeredCount }}</strong> / {{ currentSection.questions.length }} 题
+          </div>
+          <el-button type="primary" :disabled="answeredCount === 0" @click="submitAnswers" :loading="submitting">
+            📝 提交批改
+          </el-button>
+          <el-button size="small" text @click="resetAnswers">重置答案</el-button>
+        </div>
+
+        <!-- 批改结果汇总栏（提交后显示） -->
+        <div class="result-summary" v-if="submitted && submitResult">
+          <div class="result-summary-title">📊 批改结果</div>
+          <div class="result-stat">
+            <span class="result-stat-value correct">{{ submitResult.correctCount }}</span>
+            <span>答对</span>
+          </div>
+          <div class="result-stat">
+            <span class="result-stat-value wrong">{{ submitResult.wrongCount }}</span>
+            <span>答错</span>
+          </div>
+          <div class="result-stat">
+            <span class="result-stat-value unanswered">{{ submitResult.unansweredCount }}</span>
+            <span>未作答</span>
+          </div>
+          <div class="result-stat" style="margin-left:auto">
+            得分率 <strong style="font-size:16px;margin-left:4px">{{ submitResult.scoreRate }}%</strong>
+          </div>
+          <el-button size="small" @click="resetAndRetry">重新作答</el-button>
+        </div>
+      </div>
+
+      <!-- ── 右侧 AI 对话区 ── -->
+      <div class="ai-panel">
+        <!-- AI 面板头部 -->
+        <div class="ai-panel-header">
+          <div class="ai-panel-title">
+            <span>🤖</span>
+            <span>AI 助手</span>
+          </div>
+          <div class="ai-panel-subtitle">基于 GPT-3.5-turbo · 深度解析考点</div>
+        </div>
+
+        <!-- 已选题目预览 -->
+        <div v-if="selectedQuestion" class="selected-question-preview">
+          <div class="preview-label">当前提问题目</div>
+          <div class="preview-stem">题{{ selectedQuestion.number }}：{{ selectedQuestion.stem }}</div>
+        </div>
+        <div v-else class="no-question-tip">
+          <span>💡</span>
+          <span>请先在中间区域点击「向AI提问」选择一道题</span>
+        </div>
+
+        <!-- 对话消息区 -->
+        <div class="chat-messages" ref="chatMessagesRef">
+          <!-- 欢迎提示 -->
+          <div v-if="chatMessages.length === 0" class="chat-welcome">
+            <div class="chat-welcome-icon">🎓</div>
+            <div class="chat-welcome-text">
+              选择一道题后，你可以向 AI 助手提问：<br />
+              · 为什么选这个答案？<br />
+              · 各选项有什么区别？<br />
+              · 这个知识点如何记忆？
+            </div>
+          </div>
+
+          <!-- 消息列表 -->
+          <div v-for="(msg, index) in chatMessages" :key="index" class="message-item"
+            :class="msg.role === 'user' ? 'user-message' : 'ai-message'">
+            <div class="message-role">{{ msg.role === 'user' ? '你' : 'AI 助手' }}</div>
+            <div class="message-bubble" :class="{ loading: msg.loading }">
+              <template v-if="msg.loading">
+                <div class="loading-dots">
+                  <span></span><span></span><span></span>
+                </div>
+              </template>
+              <template v-else>{{ msg.content }}</template>
+            </div>
+          </div>
+        </div>
+
+        <!-- 输入区域 -->
+        <div class="chat-input-area">
+          <!-- 清空对话按钮 -->
+          <div style="display:flex;justify-content:flex-end;margin-bottom:8px" v-if="chatMessages.length > 0">
+            <el-button size="small" text type="danger" @click="clearChat">清空对话</el-button>
+          </div>
+
+          <div class="chat-input-row">
+            <textarea class="chat-textarea" v-model="userInput" :disabled="!selectedQuestion || aiLoading"
+              :placeholder="selectedQuestion ? '输入你的问题，按 Ctrl+Enter 发送...' : '请先选择一道题'"
+              @keydown.ctrl.enter="sendMessage" rows="3"></textarea>
+            <button class="send-btn" :disabled="!selectedQuestion || !userInput.trim() || aiLoading"
+              @click="sendMessage" title="发送 (Ctrl+Enter)">
+              ➤
+            </button>
+          </div>
+          <div class="chat-hint">Ctrl + Enter 发送</div>
+        </div>
+      </div>
+
+    </div>
   </div>
 
-  <!-- 主体三栏布局 -->
-  <div class="main-layout">
+  <!-- Vue 3 -->
+  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+  <!-- Element Plus JS -->
+  <script src="https://unpkg.com/element-plus/dist/index.full.js"></script>
+  <!-- Element Plus Icons -->
+  <script src="https://unpkg.com/@element-plus/icons-vue/dist/index.iife.min.js"></script>
 
-    <!-- ── 左侧菜单栏 ── -->
-    <div class="sidebar">
-      <div class="sidebar-header">
-        <span>📚</span>
-        <span>题库目录</span>
-        <span style="margin-left:auto;font-weight:400;color:#a0aec0">{{ totalChapterCount }} 章</span>
-      </div>
+  <script>
+    const { createApp, ref, reactive, computed, nextTick, onMounted } = Vue;
 
-      <div class="sidebar-tree">
-        <!-- 加载中 -->
-        <div v-if="chaptersLoading" style="padding:24px;text-align:center;color:#a0aec0">
-          <el-icon class="is-loading"><Loading /></el-icon>
-          <div style="margin-top:8px;font-size:13px">加载题库...</div>
-        </div>
+    const app = createApp({
+      setup() {
+        // ── 状态 ──
+        const chapters = ref([]);
+        const chaptersLoading = ref(false);
+        const questionsLoading = ref(false);
+        const expandedChapters = reactive(new Set());
+        const currentSectionId = ref(null);
+        const currentSection = ref(null);
+        const revealedAnswers = reactive(new Set());
 
-        <!-- 章节树 -->
-        <div v-else>
-          <div
-            v-for="chapter in chapters"
-            :key="chapter.file_id"
-            class="chapter-node"
-          >
-            <!-- 章节标题行 -->
-            <div
-              class="chapter-header"
-              :class="{ active: expandedChapters.has(chapter.file_id) }"
-              @click="toggleChapter(chapter.file_id)"
-            >
-              <span class="chapter-icon" :class="{ expanded: expandedChapters.has(chapter.file_id) }">▶</span>
-              <span class="chapter-title">{{ chapter.title }}</span>
-              <span class="chapter-badge">{{ chapter.sections.length }}</span>
-            </div>
+        // 答题 & 批改状态
+        const userAnswers = ref({});       // { question_id: 'A'|'B'|'C'|'D' }
+        const submitted = ref(false);      // 是否已提交批改
+        const submitting = ref(false);     // 提交中 loading
+        const submitResult = ref(null);    // 批改汇总结果
+        const mistakeCounts = ref({});     // { question_id: count } 历史错题次数
 
-            <!-- 子章节列表 -->
-            <div
-              class="section-list"
-              :style="{ maxHeight: expandedChapters.has(chapter.file_id) ? '2000px' : '0px' }"
-            >
-              <div
-                v-for="section in chapter.sections"
-                :key="section.section_id"
-                class="section-item"
-                :class="{ active: currentSectionId === section.section_id }"
-                @click="selectSection(section.section_id)"
-              >
-                <span class="section-dot"></span>
-                <span class="section-title">{{ section.title }}</span>
-                <span class="section-count">{{ section.question_count }}题</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+        // AI 对话状态
+        const selectedQuestion = ref(null);
+        const chatMessages = ref([]);
+        const userInput = ref('');
+        const aiLoading = ref(false);
+        const chatMessagesRef = ref(null);
 
-    <!-- ── 中间答题区 ── -->
-    <div class="content-area">
-      <!-- 内容头部 -->
-      <div class="content-header" v-if="currentSection">
-        <div>
-          <div class="content-header-title">{{ currentSection.title }}</div>
-          <div class="content-header-sub">{{ currentSection.chapter_title }}</div>
-        </div>
-        <div class="content-header-badge">共 {{ currentSection.questions.length }} 道题</div>
-      </div>
+        const selectedExamType = ref('regular'); // Default to regular exam type
+        const examTypes = ref([]); // Will be loaded from API
 
-      <!-- 题目列表 -->
-      <div class="questions-scroll">
-        <!-- 空状态 -->
-        <div v-if="!currentSection && !questionsLoading" class="empty-state">
-          <div class="empty-state-icon">📖</div>
-          <div class="empty-state-text">请从左侧菜单选择一个章节开始练习</div>
-        </div>
 
-        <!-- 加载中 -->
-        <div v-if="questionsLoading" class="empty-state">
-          <el-icon class="is-loading" style="font-size:32px"><Loading /></el-icon>
-          <div class="empty-state-text">加载题目中...</div>
-        </div>
+        // ── 服务端地址配置 ──
+        const API_BASE_URL = 'http://127.0.0.1:8000';
 
-        <!-- 题目卡片列表 -->
-        <div v-if="currentSection && !questionsLoading">
-          <div
-            v-for="question in currentSection.questions"
-            :key="question.question_id"
-            class="question-card"
-            :class="{ 'selected-for-ai': selectedQuestion && selectedQuestion.question_id === question.question_id }"
-          >
-            <!-- 题号 + 题干 + 批改结果标签 + 错题次数 -->
-            <div class="question-number-row">
-              <div
-                class="question-number-badge"
-                :style="submitted ? getQuestionBadgeStyle(question) : {}"
-              >{{ question.number }}</div>
-              <div class="question-stem">{{ question.stem }}</div>
-              <!-- 历史错题次数（未提交时显示） -->
-              <span
-                v-if="!submitted && mistakeCounts[question.question_id]"
-                class="mistake-count-badge"
-              >❌ 错过 {{ mistakeCounts[question.question_id] }} 次</span>
-              <!-- 提交后的批改结果标签 -->
-              <span v-if="submitted" :class="['question-result-tag', getResultTagClass(question)]">
-                {{ getResultTagText(question) }}
-              </span>
-            </div>
+        // ── 计算属性 ──
+        const totalChapterCount = computed(() => chapters.value.length);
 
-            <!-- 选项列表 -->
-            <div class="question-options">
-              <div
-                v-for="option in question.options"
-                :key="option"
-                class="option-item"
-                :class="getOptionClass(question, option)"
-                @click="selectAnswer(question.question_id, option)"
-              >
-                <span class="option-letter">{{ extractOptionLetter(option) }}</span>
-                <span>{{ extractOptionText(option) }}</span>
-              </div>
-            </div>
+        // 已作答题目数量
+        const answeredCount = computed(() => Object.keys(userAnswers.value).length);
 
-            <!-- 答案解析区域（提交后自动展示，或手动查看） -->
-            <div
-              class="answer-section"
-              :class="{ visible: revealedAnswers.has(question.question_id) || submitted }"
-            >
-              <div class="answer-label">✅ 正确答案</div>
-              <div class="answer-value">{{ question.answer }}</div>
-              <div class="explanation-label">📝 解析</div>
-              <div class="explanation-text">{{ question.explanation }}</div>
-            </div>
-
-            <!-- 操作按钮 -->
-            <div class="question-actions">
-              <el-button
-                v-if="!submitted"
-                size="small"
-                :type="revealedAnswers.has(question.question_id) ? 'success' : 'primary'"
-                @click="toggleAnswer(question.question_id)"
-              >
-                {{ revealedAnswers.has(question.question_id) ? '隐藏答案' : '查看答案' }}
-              </el-button>
-
-              <el-button
-                size="small"
-                :type="selectedQuestion && selectedQuestion.question_id === question.question_id ? 'warning' : 'default'"
-                @click="selectQuestionForAI(question)"
-              >
-                {{ selectedQuestion && selectedQuestion.question_id === question.question_id ? '✓ 已选中提问' : '向AI提问' }}
-              </el-button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 提交栏（未提交时显示） -->
-      <div class="submit-bar" v-if="currentSection && !questionsLoading && !submitted">
-        <div class="submit-progress">
-          已作答 <strong>{{ answeredCount }}</strong> / {{ currentSection.questions.length }} 题
-        </div>
-        <el-button
-          type="primary"
-          :disabled="answeredCount === 0"
-          @click="submitAnswers"
-          :loading="submitting"
-        >
-          📝 提交批改
-        </el-button>
-        <el-button size="small" text @click="resetAnswers">重置答案</el-button>
-      </div>
-
-      <!-- 批改结果汇总栏（提交后显示） -->
-      <div class="result-summary" v-if="submitted && submitResult">
-        <div class="result-summary-title">📊 批改结果</div>
-        <div class="result-stat">
-          <span class="result-stat-value correct">{{ submitResult.correctCount }}</span>
-          <span>答对</span>
-        </div>
-        <div class="result-stat">
-          <span class="result-stat-value wrong">{{ submitResult.wrongCount }}</span>
-          <span>答错</span>
-        </div>
-        <div class="result-stat">
-          <span class="result-stat-value unanswered">{{ submitResult.unansweredCount }}</span>
-          <span>未作答</span>
-        </div>
-        <div class="result-stat" style="margin-left:auto">
-          得分率 <strong style="font-size:16px;margin-left:4px">{{ submitResult.scoreRate }}%</strong>
-        </div>
-        <el-button size="small" @click="resetAndRetry">重新作答</el-button>
-      </div>
-    </div>
-
-    <!-- ── 右侧 AI 对话区 ── -->
-    <div class="ai-panel">
-      <!-- AI 面板头部 -->
-      <div class="ai-panel-header">
-        <div class="ai-panel-title">
-          <span>🤖</span>
-          <span>AI 助手</span>
-        </div>
-        <div class="ai-panel-subtitle">基于 GPT-3.5-turbo · 深度解析考点</div>
-      </div>
-
-      <!-- 已选题目预览 -->
-      <div v-if="selectedQuestion" class="selected-question-preview">
-        <div class="preview-label">当前提问题目</div>
-        <div class="preview-stem">题{{ selectedQuestion.number }}：{{ selectedQuestion.stem }}</div>
-      </div>
-      <div v-else class="no-question-tip">
-        <span>💡</span>
-        <span>请先在中间区域点击「向AI提问」选择一道题</span>
-      </div>
-
-      <!-- 对话消息区 -->
-      <div class="chat-messages" ref="chatMessagesRef">
-        <!-- 欢迎提示 -->
-        <div v-if="chatMessages.length === 0" class="chat-welcome">
-          <div class="chat-welcome-icon">🎓</div>
-          <div class="chat-welcome-text">
-            选择一道题后，你可以向 AI 助手提问：<br/>
-            · 为什么选这个答案？<br/>
-            · 各选项有什么区别？<br/>
-            · 这个知识点如何记忆？
-          </div>
-        </div>
-
-        <!-- 消息列表 -->
-        <div
-          v-for="(msg, index) in chatMessages"
-          :key="index"
-          class="message-item"
-          :class="msg.role === 'user' ? 'user-message' : 'ai-message'"
-        >
-          <div class="message-role">{{ msg.role === 'user' ? '你' : 'AI 助手' }}</div>
-          <div
-            class="message-bubble"
-            :class="{ loading: msg.loading }"
-          >
-            <template v-if="msg.loading">
-              <div class="loading-dots">
-                <span></span><span></span><span></span>
-              </div>
-            </template>
-            <template v-else>{{ msg.content }}</template>
-          </div>
-        </div>
-      </div>
-
-      <!-- 输入区域 -->
-      <div class="chat-input-area">
-        <!-- 清空对话按钮 -->
-        <div style="display:flex;justify-content:flex-end;margin-bottom:8px" v-if="chatMessages.length > 0">
-          <el-button size="small" text type="danger" @click="clearChat">清空对话</el-button>
-        </div>
-
-        <div class="chat-input-row">
-          <textarea
-            class="chat-textarea"
-            v-model="userInput"
-            :disabled="!selectedQuestion || aiLoading"
-            :placeholder="selectedQuestion ? '输入你的问题，按 Ctrl+Enter 发送...' : '请先选择一道题'"
-            @keydown.ctrl.enter="sendMessage"
-            rows="3"
-          ></textarea>
-          <button
-            class="send-btn"
-            :disabled="!selectedQuestion || !userInput.trim() || aiLoading"
-            @click="sendMessage"
-            title="发送 (Ctrl+Enter)"
-          >
-            ➤
-          </button>
-        </div>
-        <div class="chat-hint">Ctrl + Enter 发送</div>
-      </div>
-    </div>
-
-  </div>
-</div>
-
-<!-- Vue 3 -->
-<script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
-<!-- Element Plus JS -->
-<script src="https://unpkg.com/element-plus/dist/index.full.js"></script>
-<!-- Element Plus Icons -->
-<script src="https://unpkg.com/@element-plus/icons-vue/dist/index.iife.min.js"></script>
-
-<script>
-const { createApp, ref, reactive, computed, nextTick, onMounted } = Vue;
-
-const app = createApp({
-  setup() {
-    // ── 状态 ──
-    const chapters = ref([]);
-    const chaptersLoading = ref(false);
-    const questionsLoading = ref(false);
-    const expandedChapters = reactive(new Set());
-    const currentSectionId = ref(null);
-    const currentSection = ref(null);
-    const revealedAnswers = reactive(new Set());
-
-    // 答题 & 批改状态
-    const userAnswers = ref({});       // { question_id: 'A'|'B'|'C'|'D' }
-    const submitted = ref(false);      // 是否已提交批改
-    const submitting = ref(false);     // 提交中 loading
-    const submitResult = ref(null);    // 批改汇总结果
-    const mistakeCounts = ref({});     // { question_id: count } 历史错题次数
-
-    // AI 对话状态
-    const selectedQuestion = ref(null);
-    const chatMessages = ref([]);
-    const userInput = ref('');
-    const aiLoading = ref(false);
-    const chatMessagesRef = ref(null);
-
-    // ── 服务端地址配置 ──
-    const API_BASE_URL = 'http://127.0.0.1:8000';
-
-    // ── 计算属性 ──
-    const totalChapterCount = computed(() => chapters.value.length);
-
-    // 已作答题目数量
-    const answeredCount = computed(() => Object.keys(userAnswers.value).length);
-
-    // ── 题库加载 ──
-    async function loadChapters() {
-      chaptersLoading.value = true;
-      try {
-        const response = await fetch(`${API_BASE_URL}/api/chapters`);
-        if (!response.ok) throw new Error('加载章节失败');
-        const data = await response.json();
-        chapters.value = data.chapters;
-      } catch (error) {
-        ElMessage.error('加载题库失败：' + error.message);
-      } finally {
-        chaptersLoading.value = false;
-      }
-    }
-
-    // ── 章节展开/折叠 ──
-    function toggleChapter(fileId) {
-      if (expandedChapters.has(fileId)) {
-        expandedChapters.delete(fileId);
-      } else {
-        expandedChapters.add(fileId);
-      }
-    }
-
-    // ── 选择子章节，加载题目 + 错题记录 ──
-    async function selectSection(sectionId) {
-      if (currentSectionId.value === sectionId) return;
-
-      currentSectionId.value = sectionId;
-      currentSection.value = null;
-      revealedAnswers.clear();
-      userAnswers.value = {};
-      submitted.value = false;
-      submitResult.value = null;
-      mistakeCounts.value = {};
-      questionsLoading.value = true;
-
-      try {
-        // 并行加载题目和错题记录
-        const [sectionResponse, mistakesResponse] = await Promise.all([
-          fetch(`${API_BASE_URL}/api/sections/${sectionId}`),
-          fetch(`${API_BASE_URL}/api/mistakes/${sectionId}`),
-        ]);
-
-        if (!sectionResponse.ok) throw new Error('加载题目失败');
-        const sectionData = await sectionResponse.json();
-        currentSection.value = sectionData;
-
-        if (mistakesResponse.ok) {
-          const mistakesData = await mistakesResponse.json();
-          mistakeCounts.value = mistakesData.mistakes || {};
-        }
-      } catch (error) {
-        ElMessage.error('加载题目失败：' + error.message);
-        currentSectionId.value = null;
-      } finally {
-        questionsLoading.value = false;
-      }
-    }
-
-    // ── 查看/隐藏答案 ──
-    function toggleAnswer(questionId) {
-      if (revealedAnswers.has(questionId)) {
-        revealedAnswers.delete(questionId);
-      } else {
-        revealedAnswers.add(questionId);
-      }
-    }
-
-    // ── 选项解析辅助函数 ──
-    function extractOptionLetter(option) {
-      const match = option.match(/^([A-Da-d])/);
-      return match ? match[1].toUpperCase() : '';
-    }
-
-    function extractOptionText(option) {
-      return option.replace(/^[A-Da-d][.．、。]\s*/, '').trim();
-    }
-
-    function isCorrectOption(option, answer) {
-      const letter = extractOptionLetter(option);
-      return letter.toUpperCase() === answer.toUpperCase();
-    }
-
-    // ── 用户点击选项选择答案（未提交时有效） ──
-    function selectAnswer(questionId, option) {
-      if (submitted.value) return;
-      const letter = extractOptionLetter(option);
-      if (!letter) return;
-      userAnswers.value = { ...userAnswers.value, [questionId]: letter };
-    }
-
-    // ── 获取选项的样式 class ──
-    function getOptionClass(question, option) {
-      const letter = extractOptionLetter(option);
-      const userAnswer = userAnswers.value[question.question_id];
-      const correctAnswer = question.answer.toUpperCase();
-
-      if (!submitted.value) {
-        // 未提交：只高亮用户选中的选项
-        return {
-          'user-selected': userAnswer === letter,
-        };
-      }
-
-      // 已提交：高亮正确/错误
-      const isCorrect = letter === correctAnswer;
-      const isUserChoice = userAnswer === letter;
-
-      return {
-        'option-locked': true,
-        'correct-option': isCorrect,
-        'wrong-option': isUserChoice && !isCorrect,
-      };
-    }
-
-    // ── 获取题目编号徽标的样式（提交后变色） ──
-    function getQuestionBadgeStyle(question) {
-      const userAnswer = userAnswers.value[question.question_id];
-      if (!userAnswer) {
-        return { background: '#d69e2e' }; // 未作答：黄色
-      }
-      const isCorrect = userAnswer.toUpperCase() === question.answer.toUpperCase();
-      return isCorrect
-        ? { background: 'linear-gradient(135deg, #38a169, #276749)' }  // 正确：绿色
-        : { background: 'linear-gradient(135deg, #e53e3e, #c53030)' }; // 错误：红色
-    }
-
-    // ── 获取批改结果标签的 class ──
-    function getResultTagClass(question) {
-      const userAnswer = userAnswers.value[question.question_id];
-      if (!userAnswer) return 'unanswered-tag';
-      return userAnswer.toUpperCase() === question.answer.toUpperCase()
-        ? 'correct-tag'
-        : 'wrong-tag';
-    }
-
-    // ── 获取批改结果标签的文字 ──
-    function getResultTagText(question) {
-      const userAnswer = userAnswers.value[question.question_id];
-      if (!userAnswer) return '⚠️ 未作答';
-      return userAnswer.toUpperCase() === question.answer.toUpperCase()
-        ? '✅ 正确'
-        : `❌ 错误（你选了 ${userAnswer}）`;
-    }
-
-    // ── 提交批改 ──
-    async function submitAnswers() {
-      if (!currentSection.value || submitting.value) return;
-
-      submitting.value = true;
-      const questions = currentSection.value.questions;
-
-      // 统计结果
-      let correctCount = 0;
-      let wrongCount = 0;
-      let unansweredCount = 0;
-      const wrongQuestionIds = [];
-
-      for (const question of questions) {
-        const userAnswer = userAnswers.value[question.question_id];
-        if (!userAnswer) {
-          unansweredCount++;
-          // 未作答也计入错题
-          wrongQuestionIds.push(question.question_id);
-        } else if (userAnswer.toUpperCase() === question.answer.toUpperCase()) {
-          correctCount++;
-        } else {
-          wrongCount++;
-          wrongQuestionIds.push(question.question_id);
-        }
-      }
-
-      const total = questions.length;
-      const scoreRate = total > 0 ? Math.round((correctCount / total) * 100) : 0;
-
-      // 保存错题到后端
-      try {
-        if (wrongQuestionIds.length > 0) {
-          await fetch(`${API_BASE_URL}/api/mistakes`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ wrong_question_ids: wrongQuestionIds }),
-          });
-          // 更新本地错题次数（乐观更新，无需重新请求）
-          const updatedCounts = { ...mistakeCounts.value };
-          for (const questionId of wrongQuestionIds) {
-            updatedCounts[questionId] = (updatedCounts[questionId] || 0) + 1;
+        // ── 题库加载 ──
+        // async function loadChapters() {
+        //   chaptersLoading.value = true;
+        //   try {
+        //     const response = await fetch(`${API_BASE_URL}/api/chapters`);
+        //     if (!response.ok) throw new Error('加载章节失败');
+        //     const data = await response.json();
+        //     chapters.value = data.chapters;
+        //   } catch (error) {
+        //     ElMessage.error('加载题库失败：' + error.message);
+        //   } finally {
+        //     chaptersLoading.value = false;
+        //   }
+        // }
+        
+        async function loadChapters(examType = 'regular') {
+          chaptersLoading.value = true;
+          try {
+            const response = await fetch(`${API_BASE_URL}/api/chapters?exam_type=${examType}`);
+            if (!response.ok) throw new Error('Load chapters failed');
+            const data = await response.json();
+            chapters.value = data.chapters;
+          } catch (error) {
+            ElMessage.error('Load question bank failed: ' + error.message);
+          } finally {
+            chaptersLoading.value = false;
           }
-          mistakeCounts.value = updatedCounts;
         }
-      } catch (error) {
-        console.warn('保存错题失败：', error.message);
-      }
 
-      submitted.value = true;
-      submitResult.value = { correctCount, wrongCount, unansweredCount, scoreRate };
-      submitting.value = false;
 
-      ElMessage({
-        type: scoreRate >= 60 ? 'success' : 'warning',
-        message: `批改完成！得分率 ${scoreRate}%，答对 ${correctCount} 题，答错 ${wrongCount} 题`,
-        duration: 4000,
-      });
-    }
+        // ── 章节展开/折叠 ──
+        function toggleChapter(fileId) {
+          if (expandedChapters.has(fileId)) {
+            expandedChapters.delete(fileId);
+          } else {
+            expandedChapters.add(fileId);
+          }
+        }
 
-    // ── 重置答案（不提交，清空选择重新作答） ──
-    function resetAnswers() {
-      userAnswers.value = {};
-      revealedAnswers.clear();
-    }
+        // ── 选择子章节，加载题目 + 错题记录 ──
+        async function selectSection(sectionId) {
+          if (currentSectionId.value === sectionId) return;
 
-    // ── 重新作答（提交后重置所有状态） ──
-    function resetAndRetry() {
-      userAnswers.value = {};
-      submitted.value = false;
-      submitResult.value = null;
-      revealedAnswers.clear();
-    }
+          currentSectionId.value = sectionId;
+          currentSection.value = null;
+          revealedAnswers.clear();
+          userAnswers.value = {};
+          submitted.value = false;
+          submitResult.value = null;
+          mistakeCounts.value = {};
+          questionsLoading.value = true;
 
-    // ── 选择题目向 AI 提问 ──
-    function selectQuestionForAI(question) {
-      if (selectedQuestion.value && selectedQuestion.value.question_id === question.question_id) {
-        // 取消选中
-        selectedQuestion.value = null;
-        return;
-      }
-      selectedQuestion.value = question;
-      // 切换题目时清空对话历史
-      chatMessages.value = [];
-      userInput.value = '';
-    }
+          try {
+            // 并行加载题目和错题记录
+            const [sectionResponse, mistakesResponse] = await Promise.all([
+              fetch(`${API_BASE_URL}/api/sections/${sectionId}`),
+              fetch(`${API_BASE_URL}/api/mistakes/${sectionId}`),
+            ]);
 
-    // ── 发送消息给 AI ──
-    async function sendMessage() {
-      const messageText = userInput.value.trim();
-      if (!messageText || !selectedQuestion.value || aiLoading.value) return;
+            if (!sectionResponse.ok) throw new Error('加载题目失败');
+            const sectionData = await sectionResponse.json();
+            currentSection.value = sectionData;
 
-      // 添加用户消息
-      chatMessages.value.push({ role: 'user', content: messageText });
-      userInput.value = '';
-      aiLoading.value = true;
+            if (mistakesResponse.ok) {
+              const mistakesData = await mistakesResponse.json();
+              mistakeCounts.value = mistakesData.mistakes || {};
+            }
+          } catch (error) {
+            ElMessage.error('加载题目失败：' + error.message);
+            currentSectionId.value = null;
+          } finally {
+            questionsLoading.value = false;
+          }
+        }
 
-      // 添加 AI 加载占位
-      const loadingIndex = chatMessages.value.length;
-      chatMessages.value.push({ role: 'assistant', content: '', loading: true });
+        // ── 查看/隐藏答案 ──
+        function toggleAnswer(questionId) {
+          if (revealedAnswers.has(questionId)) {
+            revealedAnswers.delete(questionId);
+          } else {
+            revealedAnswers.add(questionId);
+          }
+        }
 
-      await scrollToBottom();
+        // ── 选项解析辅助函数 ──
+        function extractOptionLetter(option) {
+          const match = option.match(/^([A-Da-d])/);
+          return match ? match[1].toUpperCase() : '';
+        }
 
-      // 构建历史消息（不含当前加载占位）
-      const history = chatMessages.value
-        .slice(0, loadingIndex - 1)
-        .filter(msg => !msg.loading)
-        .map(msg => ({ role: msg.role, content: msg.content }));
+        function extractOptionText(option) {
+          return option.replace(/^[A-Da-d][.．、。]\s*/, '').trim();
+        }
 
-      try {
-        const question = selectedQuestion.value;
-        const response = await fetch(`${API_BASE_URL}/api/chat`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            question_id: question.question_id,
-            question_stem: question.stem,
-            options: question.options,
-            answer: question.answer,
-            explanation: question.explanation,
-            user_message: messageText,
-            history: history,
-          }),
+        function isCorrectOption(option, answer) {
+          const letter = extractOptionLetter(option);
+          return letter.toUpperCase() === answer.toUpperCase();
+        }
+
+        // ── 用户点击选项选择答案（未提交时有效） ──
+        function selectAnswer(questionId, option) {
+          if (submitted.value) return;
+          const letter = extractOptionLetter(option);
+          if (!letter) return;
+          userAnswers.value = { ...userAnswers.value, [questionId]: letter };
+        }
+
+        // ── 获取选项的样式 class ──
+        function getOptionClass(question, option) {
+          const letter = extractOptionLetter(option);
+          const userAnswer = userAnswers.value[question.question_id];
+          const correctAnswer = question.answer.toUpperCase();
+
+          if (!submitted.value) {
+            // 未提交：只高亮用户选中的选项
+            return {
+              'user-selected': userAnswer === letter,
+            };
+          }
+
+          // 已提交：高亮正确/错误
+          const isCorrect = letter === correctAnswer;
+          const isUserChoice = userAnswer === letter;
+
+          return {
+            'option-locked': true,
+            'correct-option': isCorrect,
+            'wrong-option': isUserChoice && !isCorrect,
+          };
+        }
+
+        // ── 获取题目编号徽标的样式（提交后变色） ──
+        function getQuestionBadgeStyle(question) {
+          const userAnswer = userAnswers.value[question.question_id];
+          if (!userAnswer) {
+            return { background: '#d69e2e' }; // 未作答：黄色
+          }
+          const isCorrect = userAnswer.toUpperCase() === question.answer.toUpperCase();
+          return isCorrect
+            ? { background: 'linear-gradient(135deg, #38a169, #276749)' }  // 正确：绿色
+            : { background: 'linear-gradient(135deg, #e53e3e, #c53030)' }; // 错误：红色
+        }
+
+        // ── 获取批改结果标签的 class ──
+        function getResultTagClass(question) {
+          const userAnswer = userAnswers.value[question.question_id];
+          if (!userAnswer) return 'unanswered-tag';
+          return userAnswer.toUpperCase() === question.answer.toUpperCase()
+            ? 'correct-tag'
+            : 'wrong-tag';
+        }
+
+        // ── 获取批改结果标签的文字 ──
+        function getResultTagText(question) {
+          const userAnswer = userAnswers.value[question.question_id];
+          if (!userAnswer) return '⚠️ 未作答';
+          return userAnswer.toUpperCase() === question.answer.toUpperCase()
+            ? '✅ 正确'
+            : `❌ 错误（你选了 ${userAnswer}）`;
+        }
+
+        // ── 提交批改 ──
+        async function submitAnswers() {
+          if (!currentSection.value || submitting.value) return;
+
+          submitting.value = true;
+          const questions = currentSection.value.questions;
+
+          // 统计结果
+          let correctCount = 0;
+          let wrongCount = 0;
+          let unansweredCount = 0;
+          const wrongQuestionIds = [];
+
+          for (const question of questions) {
+            const userAnswer = userAnswers.value[question.question_id];
+            if (!userAnswer) {
+              unansweredCount++;
+              // 未作答也计入错题
+              wrongQuestionIds.push(question.question_id);
+            } else if (userAnswer.toUpperCase() === question.answer.toUpperCase()) {
+              correctCount++;
+            } else {
+              wrongCount++;
+              wrongQuestionIds.push(question.question_id);
+            }
+          }
+
+          const total = questions.length;
+          const scoreRate = total > 0 ? Math.round((correctCount / total) * 100) : 0;
+
+          // 保存错题到后端
+          try {
+            if (wrongQuestionIds.length > 0) {
+              await fetch(`${API_BASE_URL}/api/mistakes`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ wrong_question_ids: wrongQuestionIds }),
+              });
+              // 更新本地错题次数（乐观更新，无需重新请求）
+              const updatedCounts = { ...mistakeCounts.value };
+              for (const questionId of wrongQuestionIds) {
+                updatedCounts[questionId] = (updatedCounts[questionId] || 0) + 1;
+              }
+              mistakeCounts.value = updatedCounts;
+            }
+          } catch (error) {
+            console.warn('保存错题失败：', error.message);
+          }
+
+          submitted.value = true;
+          submitResult.value = { correctCount, wrongCount, unansweredCount, scoreRate };
+          submitting.value = false;
+
+          ElMessage({
+            type: scoreRate >= 60 ? 'success' : 'warning',
+            message: `批改完成！得分率 ${scoreRate}%，答对 ${correctCount} 题，答错 ${wrongCount} 题`,
+            duration: 4000,
+          });
+        }
+
+        // ── 重置答案（不提交，清空选择重新作答） ──
+        function resetAnswers() {
+          userAnswers.value = {};
+          revealedAnswers.clear();
+        }
+
+        // ── 重新作答（提交后重置所有状态） ──
+        function resetAndRetry() {
+          userAnswers.value = {};
+          submitted.value = false;
+          submitResult.value = null;
+          revealedAnswers.clear();
+        }
+
+        // ── 选择题目向 AI 提问 ──
+        function selectQuestionForAI(question) {
+          if (selectedQuestion.value && selectedQuestion.value.question_id === question.question_id) {
+            // 取消选中
+            selectedQuestion.value = null;
+            return;
+          }
+          selectedQuestion.value = question;
+          // 切换题目时清空对话历史
+          chatMessages.value = [];
+          userInput.value = '';
+        }
+
+        // ── 发送消息给 AI ──
+        async function sendMessage() {
+          const messageText = userInput.value.trim();
+          if (!messageText || !selectedQuestion.value || aiLoading.value) return;
+
+          // 添加用户消息
+          chatMessages.value.push({ role: 'user', content: messageText });
+          userInput.value = '';
+          aiLoading.value = true;
+
+          // 添加 AI 加载占位
+          const loadingIndex = chatMessages.value.length;
+          chatMessages.value.push({ role: 'assistant', content: '', loading: true });
+
+          await scrollToBottom();
+
+          // 构建历史消息（不含当前加载占位）
+          const history = chatMessages.value
+            .slice(0, loadingIndex - 1)
+            .filter(msg => !msg.loading)
+            .map(msg => ({ role: msg.role, content: msg.content }));
+
+          try {
+            const question = selectedQuestion.value;
+            const response = await fetch(`${API_BASE_URL}/api/chat`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                question_id: question.question_id,
+                question_stem: question.stem,
+                options: question.options,
+                answer: question.answer,
+                explanation: question.explanation,
+                user_message: messageText,
+                history: history,
+              }),
+            });
+
+            if (!response.ok) {
+              const errorData = await response.json();
+              throw new Error(errorData.detail || '请求失败');
+            }
+
+            const data = await response.json();
+            // 替换加载占位为真实回复
+            chatMessages.value[loadingIndex] = { role: 'assistant', content: data.reply, loading: false };
+          } catch (error) {
+            chatMessages.value[loadingIndex] = {
+              role: 'assistant',
+              content: '❌ 请求失败：' + error.message + '\n\n请检查 OPENAI_API_KEY 配置是否正确。',
+              loading: false,
+            };
+          } finally {
+            aiLoading.value = false;
+            await scrollToBottom();
+          }
+        }
+
+        // ── 清空对话 ──
+        function clearChat() {
+          chatMessages.value = [];
+        }
+
+        // ── 滚动到底部 ──
+        async function scrollToBottom() {
+          await nextTick();
+          if (chatMessagesRef.value) {
+            chatMessagesRef.value.scrollTop = chatMessagesRef.value.scrollHeight;
+          }
+        }
+
+        // Add this function to load exam types
+        async function loadExamTypes() {
+          try {
+            const response = await fetch(`${API_BASE_URL}/api/exam-types`);
+            if (!response.ok) throw new Error('Load exam types failed');
+            const data = await response.json();
+            examTypes.value = data.exam_types;
+          } catch (error) {
+            console.error('Failed to load exam types:', error);
+            // Use default values if API fails
+            examTypes.value = [
+              { value: 'regular', label: '章节练习' },
+              { value: 'historical', label: '历年真题' }
+            ];
+          }
+        }
+
+        // Add handler for exam type change
+        function onExamTypeChange(value) {
+          // Reset state when changing exam type
+          chapters.value = [];
+          expandedChapters.clear();
+          currentSectionId.value = null;
+          currentSection.value = null;
+          userAnswers.value = {};
+          revealedAnswers.clear();
+          submitted.value = false;
+          submitResult.value = null;
+
+          // Load chapters for the selected exam type
+          loadChapters(value);
+        }
+
+        // ── 初始化 ──
+        onMounted(() => {
+          loadExamTypes(); // Load exam types first
+          loadChapters(selectedExamType.value); // Then load chapters for default type
         });
 
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.detail || '请求失败');
-        }
-
-        const data = await response.json();
-        // 替换加载占位为真实回复
-        chatMessages.value[loadingIndex] = { role: 'assistant', content: data.reply, loading: false };
-      } catch (error) {
-        chatMessages.value[loadingIndex] = {
-          role: 'assistant',
-          content: '❌ 请求失败：' + error.message + '\n\n请检查 OPENAI_API_KEY 配置是否正确。',
-          loading: false,
+        return {
+          chapters,
+          chaptersLoading,
+          questionsLoading,
+          expandedChapters,
+          currentSectionId,
+          currentSection,
+          revealedAnswers,
+          totalChapterCount,
+          selectedQuestion,
+          chatMessages,
+          userInput,
+          aiLoading,
+          chatMessagesRef,
+          // 答题 & 批改
+          userAnswers,
+          submitted,
+          submitting,
+          submitResult,
+          mistakeCounts,
+          answeredCount,
+          toggleChapter,
+          selectSection,
+          toggleAnswer,
+          extractOptionLetter,
+          extractOptionText,
+          isCorrectOption,
+          selectAnswer,
+          getOptionClass,
+          getQuestionBadgeStyle,
+          getResultTagClass,
+          getResultTagText,
+          submitAnswers,
+          resetAnswers,
+          resetAndRetry,
+          selectQuestionForAI,
+          sendMessage,
+          clearChat,
+          selectedExamType,
+          examTypes,
+          onExamTypeChange,
         };
-      } finally {
-        aiLoading.value = false;
-        await scrollToBottom();
-      }
-    }
-
-    // ── 清空对话 ──
-    function clearChat() {
-      chatMessages.value = [];
-    }
-
-    // ── 滚动到底部 ──
-    async function scrollToBottom() {
-      await nextTick();
-      if (chatMessagesRef.value) {
-        chatMessagesRef.value.scrollTop = chatMessagesRef.value.scrollHeight;
-      }
-    }
-
-    // ── 初始化 ──
-    onMounted(() => {
-      loadChapters();
+      },
     });
 
-    return {
-      chapters,
-      chaptersLoading,
-      questionsLoading,
-      expandedChapters,
-      currentSectionId,
-      currentSection,
-      revealedAnswers,
-      totalChapterCount,
-      selectedQuestion,
-      chatMessages,
-      userInput,
-      aiLoading,
-      chatMessagesRef,
-      // 答题 & 批改
-      userAnswers,
-      submitted,
-      submitting,
-      submitResult,
-      mistakeCounts,
-      answeredCount,
-      toggleChapter,
-      selectSection,
-      toggleAnswer,
-      extractOptionLetter,
-      extractOptionText,
-      isCorrectOption,
-      selectAnswer,
-      getOptionClass,
-      getQuestionBadgeStyle,
-      getResultTagClass,
-      getResultTagText,
-      submitAnswers,
-      resetAnswers,
-      resetAndRetry,
-      selectQuestionForAI,
-      sendMessage,
-      clearChat,
-    };
-  },
-});
+    // 注册 Element Plus
+    app.use(ElementPlus);
 
-// 注册 Element Plus
-app.use(ElementPlus);
+    // 注册 Element Plus Icons
+    for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+      app.component(key, component);
+    }
 
-// 注册 Element Plus Icons
-for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
-  app.component(key, component);
-}
-
-app.mount('#app');
-</script>
+    app.mount('#app');
+  </script>
 </body>
+
 </html>
